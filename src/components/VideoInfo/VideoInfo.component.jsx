@@ -1,6 +1,16 @@
 import React from "react";
+import Comments from "../Comments/Comments.component";
 
-const VideoInfo = ({videoTitle, channelTitle, videoSrc, description, likes, dislikes}) => {
+const VideoInfo = ({
+   videoTitle,
+   channelTitle,
+   videoSrc,
+   description,
+   likes,
+   dislikes,
+   comments,
+   channelId
+}) => {
    return (
      <div>
         <h1>{videoTitle}</h1>
@@ -17,6 +27,15 @@ const VideoInfo = ({videoTitle, channelTitle, videoSrc, description, likes, disl
         </div>
         <h3>{channelTitle}</h3>
         <p>{description}</p>
+        {comments.map((comment) => (
+          <Comments
+            key={comment.id}
+            id={comment.id}
+            videoComments={comment.snippet}
+            channelId={channelId}
+            videoId={comment.snippet.videoId}
+          />
+        ))}
      </div>
    )
 }

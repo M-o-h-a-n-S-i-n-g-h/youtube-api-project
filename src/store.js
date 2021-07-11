@@ -4,20 +4,24 @@ import { rootReducer } from "./redux/reducers/rootreducer";
 import { rootSaga } from "./redux/sagas/rootSaga";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk"
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage/session';
 
 const sagaMiddleware = createSagaMiddleware();
 
-const initialState = {
-   search: {
-      results: [
-         {id: 1, name: "Youtube"}
-      ]
-   }
-}
+
+const persistConfig = {
+   key: 'root',
+   storage: storage,
+   whitelist: ['auth']
+};
+
+const pReducer = persistReducer(persistConfig, rootReducer);
 
 const middlewares = [thunk, sagaMiddleware];
 
-const store = createStore(rootReducer, initialState, composeWithDevTools(applyMiddleware(...middlewares)));
+export const store = createStore(pReducer, composeWithDevTools(applyMiddleware(...middlewares)));
+
 sagaMiddleware.run(rootSaga)
 
-export default store;
+export const persistor = persistStore(store);

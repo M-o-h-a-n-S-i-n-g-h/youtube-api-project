@@ -44,11 +44,20 @@ class HomeScreen extends React.Component {
       this.props.login();
    }
    
+   handleSignOut = () => {
+      const gapi = window.gapi;
+      gapi.auth2.getAuthInstance().signOut().then(() => console.log("Logged out"))
+      .catch(err => console.log(err))
+      sessionStorage.removeItem("persist:root");
+      window.location.reload()
+   }
+   
    render() {
       return (
         <div className="App">
            <h1>Youtube {this.authStatus()}</h1>
            <button onClick={this.handleSignIn}>Sign In</button>
+           <button onClick={this.handleSignOut}>Sign Out</button>
            <h2>
               {
                  this.props.user && (this.isEmpty(this.props.user)
@@ -65,7 +74,6 @@ class HomeScreen extends React.Component {
 }
 
 const mapStateToProps = state => {
-   // console.log(state.auth.user)
    return {
       results: state.search.results,
       loading: state.search.loading,

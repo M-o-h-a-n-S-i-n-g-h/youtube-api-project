@@ -1,12 +1,14 @@
 import React from "react";
 
-const Comments = ({id, videoComments}) => {
+const Comments = ({id, videoComments, channelId, videoId}) => {
    return (
      <div>
         <h5>
            {videoComments.topLevelComment.snippet.authorDisplayName}: <span
           style={{color: "blue"}}>{videoComments.topLevelComment.snippet.textDisplay}
-        </span> <span><button>Edit</button></span> <span><button>Reply</button></span>
+        </span>
+           <span><button>Edit</button></span>{" "}
+           <span><button>Reply</button></span>
         </h5>
      </div>
    )
