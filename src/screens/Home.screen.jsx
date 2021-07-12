@@ -1,11 +1,9 @@
 import React from "react";
 import SearchBar from "../components/SearchBar/SearchBar.component";
 import { getSearchResultsAction } from "../redux/actions/search.action";
-import { connect, useSelector } from "react-redux";
+import { connect } from "react-redux";
 import VideoList from "../components/VideoList/VideoList.component";
 import { login } from "../redux/actions/auth.action";
-
-const gapi = window.gapi;
 
 class HomeScreen extends React.Component {
    constructor(props) {
@@ -14,18 +12,6 @@ class HomeScreen extends React.Component {
          query: "",
       }
    }
-   
-   // authStatus = () => {
-   //    const {isSignedIn} = this.state;
-   //    if (isSignedIn == null) {
-   //       return null
-   //    } else if (isSignedIn) {
-   //       return <span>Signed in</span>
-   //    } else {
-   //       return <span>Not Signed In</span>
-   //    }
-   // }
-   //
    
    isEmpty(obj) {
       return Object.keys(obj).length === 0;
@@ -55,14 +41,13 @@ class HomeScreen extends React.Component {
    }
    
    handleSignOut = () => {
-      const gapi = window.gapi;
       sessionStorage.removeItem("persist:root");
       window.location.reload();
    }
    
    render() {
       return (
-        <div className="App">
+        <div>
            <h1>Youtube {this.authStatusButton()}</h1>
            <button onClick={this.handleSignIn}>Sign In</button>
            <button onClick={this.handleSignOut}>Sign Out</button>

@@ -1,57 +1,75 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useDispatch } from "react-redux";
-import { replyComment } from "../../redux/actions/comments.action";
-
+import React, { useRef, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { editComment, replyComment } from "../../redux/actions/comments.action";
 
 const Comments = ({id, videoComments, channelId, videoId, parentId}) => {
    const [readyToEdit, setReadyToEdit] = useState(false);
    const [readyToReply, setReadyToReply] = useState(false);
-   // const [replyTextOriginal, setReplyTextOriginal] = useState("");
    const dispatch = useDispatch();
+   const {user} = useSelector(state => state.auth);
    const replyRef = useRef("");
+   const editRef = useRef("");
    
    const handleReplyComment = () => {
-      const textOriginal = replyRef.current.value;
-      dispatch(replyComment(parentId, textOriginal));
+      let replyTextOriginal = replyRef.current.value;
+      dispatch(replyComment(parentId, replyTextOriginal));
+   }
+   
+   const handleEditComment = () => {
+      const editTextOriginal = editRef.current.value;
+      dispatch(editComment(editTextOriginal));
    }
    
    const handleReplyButton = () => {
       setReadyToReply(true);
    }
    
-   const ReplyInput = () => {
+   const handleEditButton = () => {
+      setReadyToEdit(true);
+   }
+   
+   const ReplyInput = ({reference, handler, title}) => {
       return (
         <>
            <input
-             ref={replyRef}
+             ref={reference}
              type="text"
-             // onChange={(e) => {
-             //    e.preventDefault();
-             //    setReplyTextOriginal(e.target.value)
-             // }}
            />
-           <button onClick={handleReplyComment}>Reply</button>
+           <button onClick={handler}>{title}</button>
         </>
       )
    }
    
-   const ParentReply = () => (<ReplyInput/>)
+   const ParentReply = ({reference, handler, title}) => (
+     <ReplyInput reference={reference} handler={handler} title={title}/>
+   )
    
    return (
      <div>
         <h5>
-           {videoComments.topLevelComment.snippet.authorDisplayName}: <span
-          style={{color: "blue"}}>{videoComments.topLevelComment.snippet.textOriginal}
-        </span>
-           <span><button>Edit</button></span>{" "}
-           {/*{readyToEdit && (*/}
-           {/*  <input*/}
-           {/*    type="text"*/}
-           {/*    onChange={(e) => setTextOriginal(e.target.value)}*/}
-           {/*  />*/}
-           {/*)}*/}
+           {videoComments.topLevelComment.snippet?.authorDisplayName}:<span
+          style={{color: "blue"}}>{videoComments.topLevelComment.snippet?.textDisplay}
+           </span>
+           
+           {user === videoComments.topLevelComment.snippet?.authorDisplayName &&
+           <span>
+              <button onClick={handleEditButton}>Edit</button>
+           </span>}
+           {readyToEdit && (
+             <ParentReply
+               reference={editRef}
+               handler={handleEditComment}
+               title="Edit"
+             />
+           )}
            <span><button onClick={handleReplyButton}>Reply</button></span>
-           {readyToReply ? (<ParentReply/>) : null}
+           {readyToReply ? (
+                           <ParentReply
+                             reference={replyRef}
+                             handler={handleReplyComment}
+                             title="Reply"
+                           />)
+                         : null}
         </h5>
      </div>
    )
