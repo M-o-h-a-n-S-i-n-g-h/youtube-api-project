@@ -13,13 +13,13 @@ export const getVideoDetailsAction = videoId => async dispatch => {
       });
       const {data: comments} = await youtube.get("/commentThreads", {
          params: {
-            part: "id, snippet",
+            part: "id, snippet, replies",
             videoId: videoId
          }
       });
       dispatch({type: GET_VIDEODETAIL_SUCCESS, payload: {video, comments}});
       
    } catch (error) {
-      console.log(error);
+      console.error(error);
    }
 }

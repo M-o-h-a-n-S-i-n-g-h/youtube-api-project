@@ -34,6 +34,7 @@ const VideoInfo = ({
             videoComments={comment.snippet}
             channelId={channelId}
             videoId={comment.snippet.videoId}
+            parentId={comments[0].id}
           />
         ))}
      </div>

@@ -4,9 +4,13 @@ import { signIn } from "../../Helpers/Signin";
 export const login = () => dispatch => {
    dispatch({type: SIGNIN_REQUEST});
    
-   signIn()
-   .then((res) => {
-      dispatch({type: SIGNIN_SUCCESS, payload: res})
+   return new Promise((resolve) => {
+      signIn()
+      .then((res) => {
+         dispatch({type: SIGNIN_SUCCESS, payload: res})
+         resolve(res)
+      })
+      .catch(err => console.error(err))
    })
-   .catch(err => console.log(err));
+   
 }

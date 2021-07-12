@@ -23,8 +23,9 @@ const VideoDetail = ({match}) => {
       dispatch(getVideoDetailsAction(videoId));
    }, [dispatch, videoId])
    
-   const handleAddComment = (channelId, videoId) => {
-      // dispatch(addComment(channelId, videoId))
+   const handleAddComment = (channelId, videoId, textOriginal) => {
+      dispatch(addComment(channelId, videoId, textOriginal))
+      setTextOriginal("");
    }
    
    return (
@@ -54,7 +55,6 @@ const VideoDetail = ({match}) => {
             comments={comments.items}
           />
         )}
-     
      </div>
    )
 }

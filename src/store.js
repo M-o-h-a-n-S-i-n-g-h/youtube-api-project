@@ -5,14 +5,14 @@ import { rootSaga } from "./redux/sagas/rootSaga";
 import { composeWithDevTools } from "redux-devtools-extension";
 import thunk from "redux-thunk"
 import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage/session';
+import sessionStorage from 'redux-persist/lib/storage/session';
 
 const sagaMiddleware = createSagaMiddleware();
 
 
 const persistConfig = {
    key: 'root',
-   storage: storage,
+   storage: sessionStorage,
    whitelist: ['auth']
 };
 
