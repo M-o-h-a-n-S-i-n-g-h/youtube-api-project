@@ -5,7 +5,6 @@ import VideoInfo from "../components/VideoInfo/VideoInfo.component";
 import { addComment } from "../redux/actions/comments.action";
 
 const VideoDetail = ({match}) => {
-   const [readToComment, setReadyToComment] = useState(false);
    const [textOriginal, setTextOriginal] = useState("");
    const videoId = match.params.id;
    const videoSrc = `https://www.youtube.com/embed/${videoId}`;
@@ -25,7 +24,6 @@ const VideoDetail = ({match}) => {
    }, [dispatch, videoId])
    
    const handleAddComment = (channelId, videoId) => {
-      setReadyToComment(true);
       // dispatch(addComment(channelId, videoId))
    }
    
@@ -33,19 +31,17 @@ const VideoDetail = ({match}) => {
      <div style={{textAlign: "center"}}>
         {loading && <h3>Loading...</h3>}
         <h3>Comments</h3>
+        <input
+          type="text"
+          value={textOriginal}
+          onChange={(e) => setTextOriginal(e.target.value)}
+        />
         <span>
             <button
               onClick={() => handleAddComment(channelId, videoId, textOriginal)}>
               Add Comment
            </button>
         </span>
-        {readToComment && (
-          <input
-            type="text"
-            value={textOriginal}
-            onChange={(e) => setTextOriginal(e.target.value)}
-          />)
-        }
         {video && comments && (
           <VideoInfo
             videoTitle={video.items[0].snippet.title}
