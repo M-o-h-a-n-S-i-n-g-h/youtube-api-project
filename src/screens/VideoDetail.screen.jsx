@@ -13,13 +13,13 @@ const VideoDetail = ({match}) => {
    const dispatch = useDispatch();
    const {videoDetails, loading} = useSelector((state) => state.video);
    const {addCommentResponse, replyCommentResponse, error} = useSelector(state => state.comment);
-   console.log("commentResponse", addCommentResponse);
-   console.log("replycommentResponse", replyCommentResponse);
+   // console.log("commentResponse", addCommentResponse);
+   // console.log("replycommentResponse", replyCommentResponse);
    const video = videoDetails ? videoDetails.video : null;
    const comments = videoDetails ? videoDetails.comments : null;
    const channelId = video ? video.items[0].snippet.channelId : null;
    // console.log(video)
-   console.log(comments)
+   // console.log(comments)
    
    const handleAddComment = (channelId, videoId, textOriginal) => {
       dispatch(addComment(channelId, videoId, textOriginal));
@@ -43,6 +43,7 @@ const VideoDetail = ({match}) => {
         {video && comments && (
           <>
              <VideoInfo
+               videoId={videoId}
                videoTitle={video.items[0].snippet.title}
                likes={video.items[0].statistics.likeCount}
                dislikes={video.items[0].statistics.dislikeCount}

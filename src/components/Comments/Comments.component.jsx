@@ -1,8 +1,7 @@
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { editComment, replyComment } from "../../redux/actions/comments.action";
-import { Avatar } from "@material-ui/core";
-import List from "../List/List";
+import { Avatar, Button, TextField } from "@material-ui/core";
 import CommentList from "../List/List";
 
 const Comments = ({videoComments, parentId}) => {
@@ -24,57 +23,72 @@ const Comments = ({videoComments, parentId}) => {
    }
    
    const handleReplyButton = () => {
-      setReadyToReply(true);
+      setReadyToReply(!readyToReply);
    }
    
    const handleEditButton = () => {
-      setReadyToEdit(true);
+      setReadyToEdit(!readyToEdit);
    }
    
-   const ReplyInput = ({reference, handler, title}) => {
+   const Input = ({reference, handler, title}) => {
       return (
         <>
-           <input
-             ref={reference}
-             type="text"
-           />
-           <button onClick={handler}>{title}</button>
+           <TextField inputRef={reference} id="standard-basic" label={title}/>
+           <div>
+              <Button style={{marginLeft: "16rem"}} onClick={handler}>{title}</Button>
+           </div>
         </>
       )
    }
    
-   const ParentReply = ({reference, handler, title}) => (
-     <ReplyInput reference={reference} handler={handler} title={title}/>
+   const Reply = ({
+        reference, handler, title
+     }
+   ) => (
+     <Input reference={reference} handler={handler} title={title}/>
    )
    
    return (
      <div>
         <h5>
-           {videoComments.topLevelComment.snippet?.authorDisplayName}: <>
-           <CommentList comment={videoComments.topLevelComment.snippet?.textDisplay}
-                        profileUrl={videoComments.topLevelComment.snippet?.textDisplay}
-                        userName={videoComments.topLevelComment.snippet?.authorDisplayName}
-           />
-           {user === videoComments.topLevelComment.snippet?.authorDisplayName &&
-           <span>
-              <button onClick={handleEditButton}>Edit</button>
+           <>
+              <CommentList comment={videoComments.topLevelComment.snippet?.textDisplay}
+                           profileUrl={videoComments.topLevelComment.snippet?.authorProfileImageUrl}
+                           userName={videoComments.topLevelComment.snippet?.authorDisplayName}
+              />
+              {user === videoComments.topLevelComment.snippet?.authorDisplayName &&
+              <span>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={handleEditButton}
+              >
+                 Edit
+              </Button>
            </span>}
-           {readyToEdit && (
-             <ParentReply
-               reference={editRef}
-               handler={handleEditComment}
-               title="Edit"
-             />
-           )}
-        </>
-           <span><button onClick={handleReplyButton}>Reply</button></span>
-           {readyToReply ? (
-                           <ParentReply
-                             reference={replyRef}
-                             handler={handleReplyComment}
-                             title="Reply"
-                           />)
-                         : null}
+              {readyToEdit && (
+                <Reply
+                  reference={editRef}
+                  handler={handleEditComment}
+                  title="Edit"
+                />
+              )}
+              <span>
+              <Button variant="outlined" color="primary"
+                      onClick={handleReplyButton}
+                      style={{marginRight: "20px"}}
+              >
+                 Reply
+              </Button>
+           </span>
+              {readyToReply ? (
+                              <Reply
+                                reference={replyRef}
+                                handler={handleReplyComment}
+                                title="Reply"
+                              />)
+                            : null}
+           </>
         </h5>
      </div>
    )

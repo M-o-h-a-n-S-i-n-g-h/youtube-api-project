@@ -10,71 +10,9 @@ import {
    REPLY_COMMENT_REQUEST,
    REPLY_COMMENT_SUCCESS
 } from "../constants/comment.constants";
-import { youtube } from "../../Helpers/Helpers";
+import { editComment, postComment, replyComment } from "../../Helpers/comment.helper";
 
 export const authState = (state) => state.auth;
-
-const postComment = async (action, token) => {
-   const config = {
-      headers: {
-         "Accept": "application/json",
-         "Content-Type": "application/json",
-         "Authorization": `Bearer ${token}`,
-      },
-   };
-   const {data} = await youtube.post("/commentThreads?part=snippet%2Cid%2Creplies", {
-        snippet: {
-           channelId: action.channelId,
-           videoId: action.videoId,
-           topLevelComment: {
-              snippet: {
-                 textOriginal: action.textOriginal
-              }
-           }
-        }
-     },
-     config
-   );
-   return data;
-}
-
-export const replyComment = async (action, token) => {
-   const config = {
-      headers: {
-         "Accept": "application/json",
-         "Content-Type": "application/json",
-         "Authorization": `Bearer ${token}`,
-      },
-   };
-   const {data} = await youtube.post("/comments?part=snippet%2Cid", {
-        snippet: {
-           parentId: action.parentId,
-           textOriginal: action.textOriginal
-        }
-     },
-     config
-   );
-   return data;
-}
-
-export const editComment = async (action, token) => {
-   const config = {
-      headers: {
-         "Accept": "application/json",
-         "Content-Type": "application/json",
-         "Authorization": `Bearer ${token}`,
-      },
-   };
-   const {data} = await youtube.put("/comments?part=snippet%2Cid", {
-        snippet: {
-           textOriginal: action.textOriginal
-        }
-     },
-     config
-   );
-   return data;
-}
-
 
 export function* addCommentActions(action) {
    try {

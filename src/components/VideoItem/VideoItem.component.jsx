@@ -19,7 +19,6 @@ const useStyles = makeStyles({
 
 
 const defaultProps = {
-   // bgcolor: 'background.paper',
    borderRadius: "10px",
    marginTop: "20px"
 };

@@ -1,15 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import Comments from "../Comments/Comments.component";
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import { Avatar, Box, Divider } from "@material-ui/core";
 import TextAccordian from "../Accordian/Accordian";
+import { addComment } from "../../redux/actions/comments.action";
+import { useDispatch } from "react-redux";
+
 
 const VideoInfo = ({
    videoTitle,
    channelTitle,
    videoSrc,
+   videoId,
    description,
    likes,
    dislikes,
@@ -36,6 +40,15 @@ const VideoInfo = ({
          fontSize: "2em",
       }
    }
+   const [textOriginal, setTextOriginal] = useState("");
+   const dispatch = useDispatch();
+   
+   
+   const handleAddComment = (channelId, videoId, textOriginal) => {
+      dispatch(addComment(channelId, videoId, textOriginal));
+      setTextOriginal("");
+   }
+   
    
    return (
      <div>
@@ -71,8 +84,19 @@ const VideoInfo = ({
         </span>
         </div>
         <Divider variant="inset"/>
-        <TextAccordian description={description} />
-        
+        <TextAccordian description={description}/>
+        <h3>Comments</h3>
+        <input
+          type="text"
+          value={textOriginal}
+          onChange={(e) => setTextOriginal(e.target.value)}
+        />
+        <span>
+            <button
+              onClick={() => handleAddComment(channelId, videoId, textOriginal)}>
+              Add Comment
+           </button>
+        </span>
         {comments.map((comment) => (
           <Comments
             key={comment.id}
