@@ -7,7 +7,7 @@ export default function AppContainer({children}) {
    return (
      <React.Fragment>
         <CssBaseline/>
-        <Container maxWidth="lg">
+        <Container fixed>
            <Typography component="div"/>
            {children}
         </Container>

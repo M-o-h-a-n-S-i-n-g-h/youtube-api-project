@@ -3,10 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getVideoDetailsAction } from "../redux/actions/video.action"
 import VideoInfo from "../components/VideoInfo/VideoInfo.component";
 import { addComment } from "../redux/actions/comments.action";
-import {
-   GET_VIDEODETAIL_REQUEST,
-   GET_VIDEODETAIL_SUCCESS
-} from "../redux/constants/video.constants";
+import { CircularProgress } from "@material-ui/core";
 
 const VideoDetail = ({match}) => {
    const [textOriginal, setTextOriginal] = useState("");
@@ -33,33 +30,43 @@ const VideoDetail = ({match}) => {
       dispatch(getVideoDetailsAction(videoId));
    }, [dispatch, videoId])
    
-   
    return (
-     <div style={{textAlign: "center"}}>
-        {loading && <h3>Loading...</h3>}
-        <h3>Comments</h3>
-        <input
-          type="text"
-          value={textOriginal}
-          onChange={(e) => setTextOriginal(e.target.value)}
-        />
-        <span>
+     <div>
+        {loading &&
+        <CircularProgress size={40}
+                          left={-20}
+                          top={10}
+                          status={'loading'}
+                          style={{marginLeft: '50%'}}
+                          color="secondary"
+        />}
+        {video && comments && (
+          <>
+             <VideoInfo
+               videoTitle={video.items[0].snippet.title}
+               likes={video.items[0].statistics.likeCount}
+               dislikes={video.items[0].statistics.dislikeCount}
+               viewCount={video.items[0].statistics.viewCount}
+               channelTitle={video.items[0].snippet.channelTitle}
+               channelId={video.items[0].snippet.channelId}
+               description={video.items[0].snippet.description}
+               videoSrc={videoSrc}
+               comments={comments.items}
+               thumbnail={video.items[0].snippet.thumbnails.default.url}
+             />
+             <h3>Comments</h3>
+             <input
+               type="text"
+               value={textOriginal}
+               onChange={(e) => setTextOriginal(e.target.value)}
+             />
+             <span>
             <button
               onClick={() => handleAddComment(channelId, videoId, textOriginal)}>
               Add Comment
            </button>
         </span>
-        {video && comments && (
-          <VideoInfo
-            videoTitle={video.items[0].snippet.title}
-            likes={video.items[0].statistics.likeCount}
-            dislikes={video.items[0].statistics.dislikeCount}
-            channelTitle={video.items[0].snippet.channelTitle}
-            channelId={video.items[0].snippet.channelId}
-            description={video.items[0].snippet.description}
-            videoSrc={videoSrc}
-            comments={comments.items}
-          />
+          </>
         )}
      </div>
    )

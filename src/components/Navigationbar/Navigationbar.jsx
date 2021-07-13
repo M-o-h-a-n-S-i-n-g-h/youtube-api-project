@@ -5,10 +5,10 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import AccountCircle from '@material-ui/icons/AccountCircle';
-import MenuItem from '@material-ui/core/MenuItem';
-import Menu from '@material-ui/core/Menu';
-import { Button } from "@material-ui/core";
+import { Avatar, Button, CircularProgress, Grid } from "@material-ui/core";
+import { useDispatch, useSelector } from "react-redux";
+import { login } from "../../redux/actions/auth.action";
+import YouTubeIcon from '@material-ui/icons/YouTube';
 
 const useStyles = makeStyles((theme) => ({
    root: {
@@ -27,56 +27,76 @@ export default function NavBar() {
    const [auth, setAuth] = React.useState(true);
    const [anchorEl, setAnchorEl] = React.useState(null);
    const open = Boolean(anchorEl);
+   const dispatch = useDispatch();
+   const {isLoggedIn, imgUrl, loading} = useSelector((state) => state.auth);
    
    const handleMenu = (event) => {
       setAnchorEl(event.currentTarget);
    };
    
-   const handleClose = () => {
-      setAnchorEl(null);
-   };
+   const signInHandler = () => (
+     dispatch(login())
+   )
+   
+   const signOutHandler = () => {
+      sessionStorage.removeItem("persist:root");
+      window.location.reload();
+   }
    
    return (
      <div className={classes.root}>
-        <AppBar position="static">
+        <AppBar position="static" style={{backgroundColor: "red"}}>
            <Toolbar>
               <IconButton edge="start" className={classes.menuButton} color="inherit"
                           aria-label="menu">
                  <MenuIcon/>
               </IconButton>
               <Typography variant="h6" className={classes.title}>
-                 Photos
+                 <Grid container direction="row" alignItems="center">
+                    <Grid item>
+                       <YouTubeIcon fontSize={"large"}
+                                    style={{
+                                       display: 'flex',
+                                       alignItems: 'center',
+                                       flexWrap: 'wrap'
+                                    }}
+                       />
+                    </Grid>
+                    <Grid item>
+                       <span><b style={{fontFamily: "Open Sans"}}>Youtube</b></span>
+                    </Grid>
+                 </Grid>
               </Typography>
               {auth && (
                 <div>
-                   <Button variant="contained" color="primary">SignIn</Button>
-                   <IconButton
-                     aria-label="account of current user"
-                     aria-controls="menu-appbar"
-                     aria-haspopup="true"
-                     onClick={handleMenu}
-                     color="inherit"
+                   {isLoggedIn &&
+                   <Button
+                     variant="contained"
+                     color="primary"
+                     onClick={signOutHandler}
                    >
-                      <AccountCircle/>
-                   </IconButton>
-                   <Menu
-                     id="menu-appbar"
-                     anchorEl={anchorEl}
-                     anchorOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                     }}
-                     keepMounted
-                     transformOrigin={{
-                        vertical: 'top',
-                        horizontal: 'right',
-                     }}
-                     open={open}
-                     onClose={handleClose}
+                      SignOut
+                   </Button>
+                   }
+                   {!isLoggedIn &&
+                   <Button variant="contained"
+                           color="primary"
+                           onClick={signInHandler}
                    >
-                      <MenuItem onClick={handleClose}>Profile</MenuItem>
-                      <MenuItem onClick={handleClose}>My account</MenuItem>
-                   </Menu>
+                      SignIn
+                   </Button>
+                   }
+                   {loading ? <CircularProgress color="secondary"/> :
+                    <IconButton
+                      aria-label="account of current user"
+                      aria-controls="menu-appbar"
+                      aria-haspopup="true"
+                      onClick={handleMenu}
+                      color="inherit"
+                    >
+                       <Avatar src={imgUrl}/>
+                    </IconButton>
+                   }
                 </div>
               )}
            </Toolbar>

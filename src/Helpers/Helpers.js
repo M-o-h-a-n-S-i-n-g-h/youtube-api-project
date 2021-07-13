@@ -1,10 +1,10 @@
 import axios from "axios";
-const KEY = "AIzaSyBBj6tv0IPU15e3Ip_EnD7kTElWZwkasxk";
+import * as credentials from "../credentials";
 
 export const youtube = axios.create({
    baseURL: "https://www.googleapis.com/youtube/v3",
    params: {
-      key: KEY,
+      key: credentials.API_KEY,
       maxResults: 50,
    }
 })

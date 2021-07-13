@@ -1,10 +1,17 @@
 import React from "react";
+import { FormControl, Input, InputLabel, } from "@material-ui/core";
 
 const SearchBar = ({handleChange, handleSubmit}) => {
    return (
-     <form onSubmit={handleSubmit}>
-        <label htmlFor="query">Search</label>
-        <input type="text" name="query" onChange={handleChange}/>
+     <form onSubmit={handleSubmit} style={{marginTop: "20px"}}>
+        < FormControl style={{width: "100%"}}>
+           <InputLabel htmlFor="my-input">Search</InputLabel>
+           <Input
+             id="my-input"
+             aria-describedby="my-helper-text"
+             onChange={handleChange}
+           />
+        </FormControl>
      </form>
    )
 }

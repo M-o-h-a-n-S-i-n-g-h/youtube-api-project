@@ -3,7 +3,6 @@ import SearchBar from "../components/SearchBar/SearchBar.component";
 import { getSearchResultsAction } from "../redux/actions/search.action";
 import { connect } from "react-redux";
 import VideoList from "../components/VideoList/VideoList.component";
-import { login } from "../redux/actions/auth.action";
 
 class HomeScreen extends React.Component {
    constructor(props) {
@@ -11,10 +10,6 @@ class HomeScreen extends React.Component {
       this.state = {
          query: "",
       }
-   }
-   
-   isEmpty(obj) {
-      return Object.keys(obj).length === 0;
    }
    
    handleChange = (event) => {
@@ -26,40 +21,10 @@ class HomeScreen extends React.Component {
       this.props.getSearchResultsAction(this.state.query);
    }
    
-   handleSignIn = async () => {
-      await this.props.login();
-   }
-   
-   authStatusButton = () => {
-      if (!this.props.user) {
-         return <span>Not Signed In</span>
-      } else if (this.props.user.length !== 0) {
-         return <span>Signed In</span>
-      } else {
-         return null;
-      }
-   }
-   
-   handleSignOut = () => {
-      sessionStorage.removeItem("persist:root");
-      window.location.reload();
-   }
-   
    render() {
       return (
         <div>
-           <h1>Youtube {this.authStatusButton()}</h1>
-           <button onClick={this.handleSignIn}>Sign In</button>
-           <button onClick={this.handleSignOut}>Sign Out</button>
-           <h2>
-              {
-                 this.props.user && (this.isEmpty(this.props.user)
-                                     ? null
-                                     : this.props.user)
-              }
-           </h2>
            <SearchBar handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
-           {this.props.loading && (<h2>Loading...</h2>)}
            {this.props.results.items && <VideoList videos={this.props.results.items}/>}
         </div>
       )
@@ -69,15 +34,12 @@ class HomeScreen extends React.Component {
 const mapStateToProps = state => {
    return {
       results: state.search.results,
-      loading: state.search.loading,
-      user: state.auth.user,
    }
 }
 
 const mapDispatchToProps = dispatch => {
    return {
       getSearchResultsAction: (query) => dispatch(getSearchResultsAction(query)),
-      login: () => dispatch(login())
    }
 }
 

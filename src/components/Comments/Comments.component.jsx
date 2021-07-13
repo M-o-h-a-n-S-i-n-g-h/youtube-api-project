@@ -1,8 +1,11 @@
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { editComment, replyComment } from "../../redux/actions/comments.action";
+import { Avatar } from "@material-ui/core";
+import List from "../List/List";
+import CommentList from "../List/List";
 
-const Comments = ({id, videoComments, channelId, videoId, parentId}) => {
+const Comments = ({videoComments, parentId}) => {
    const [readyToEdit, setReadyToEdit] = useState(false);
    const [readyToReply, setReadyToReply] = useState(false);
    const dispatch = useDispatch();
@@ -47,10 +50,11 @@ const Comments = ({id, videoComments, channelId, videoId, parentId}) => {
    return (
      <div>
         <h5>
-           {videoComments.topLevelComment.snippet?.authorDisplayName}:<span
-          style={{color: "blue"}}>{videoComments.topLevelComment.snippet?.textDisplay}
-           </span>
-           
+           {videoComments.topLevelComment.snippet?.authorDisplayName}: <>
+           <CommentList comment={videoComments.topLevelComment.snippet?.textDisplay}
+                        profileUrl={videoComments.topLevelComment.snippet?.textDisplay}
+                        userName={videoComments.topLevelComment.snippet?.authorDisplayName}
+           />
            {user === videoComments.topLevelComment.snippet?.authorDisplayName &&
            <span>
               <button onClick={handleEditButton}>Edit</button>
@@ -62,6 +66,7 @@ const Comments = ({id, videoComments, channelId, videoId, parentId}) => {
                title="Edit"
              />
            )}
+        </>
            <span><button onClick={handleReplyButton}>Reply</button></span>
            {readyToReply ? (
                            <ParentReply
