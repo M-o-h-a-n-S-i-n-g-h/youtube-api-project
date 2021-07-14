@@ -4,5 +4,6 @@ import { render, screen } from "@testing-library/react";
 
 test("renders the first paint", () => {
    render(<HomeScreen/>);
-   expect(screen.getByLabelText(/search/)).toBeInTheDocument();
+   screen.debug()
+   expect(screen.getByTestId("search")).toBeInTheDocument();
 })

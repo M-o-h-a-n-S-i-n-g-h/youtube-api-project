@@ -3,7 +3,7 @@ import Comments from "../Comments/Comments.component";
 import ThumbUpIcon from '@material-ui/icons/ThumbUp';
 import ThumbDownIcon from '@material-ui/icons/ThumbDown';
 import VisibilityIcon from '@material-ui/icons/Visibility';
-import { Avatar, Box, Divider } from "@material-ui/core";
+import { Avatar, Button, Divider, TextField } from "@material-ui/core";
 import TextAccordian from "../Accordian/Accordian";
 import { addComment } from "../../redux/actions/comments.action";
 import { useDispatch } from "react-redux";
@@ -85,17 +85,20 @@ const VideoInfo = ({
         </div>
         <Divider variant="inset"/>
         <TextAccordian description={description}/>
-        <h3>Comments</h3>
-        <input
+        <h1>Comments</h1>
+        <TextField
           type="text"
           value={textOriginal}
           onChange={(e) => setTextOriginal(e.target.value)}
+          margin={"normal"}
         />
         <span>
-            <button
+            <Button
+              variant="contained"
+              color="primary"
               onClick={() => handleAddComment(channelId, videoId, textOriginal)}>
               Add Comment
-           </button>
+           </Button>
         </span>
         {comments.map((comment) => (
           <Comments

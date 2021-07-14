@@ -1,4 +1,8 @@
-import { GET_VIDEODETAIL_REQUEST, GET_VIDEODETAIL_SUCCESS } from "../constants/video.constants"
+import {
+   GET_VIDEODETAIL_FAIL,
+   GET_VIDEODETAIL_REQUEST,
+   GET_VIDEODETAIL_SUCCESS
+} from "../constants/video.constants"
 import { youtube } from "../../Helpers/Helpers";
 
 
@@ -20,6 +24,10 @@ export const getVideoDetailsAction = videoId => async dispatch => {
       dispatch({type: GET_VIDEODETAIL_SUCCESS, payload: {video, comments}});
       
    } catch (error) {
-      console.error(error);
+      dispatch({
+         type: GET_VIDEODETAIL_FAIL, error: error.response && error.response.data.message
+                                            ? error.response.data.message
+                                            : error.message,
+      })
    }
 }

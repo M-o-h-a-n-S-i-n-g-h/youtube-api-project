@@ -4,9 +4,9 @@ import {
    ADD_COMMENT_FAIL,
    ADD_COMMENT_REQUEST,
    ADD_COMMENT_SUCCESS,
-   EDIT_COMMENT,
+   EDIT_COMMENT, EDIT_COMMENT_FAIL,
    EDIT_COMMENT_REQUEST, EDIT_COMMENT_SUCCESS,
-   REPLY_COMMENT,
+   REPLY_COMMENT, REPLY_COMMENT_FAIL,
    REPLY_COMMENT_REQUEST,
    REPLY_COMMENT_SUCCESS
 } from "../constants/comment.constants";
@@ -21,9 +21,12 @@ export function* addCommentActions(action) {
       const token = userInfo.token;
       const response = yield call(postComment, ...[action, token]);
       yield put({type: ADD_COMMENT_SUCCESS, payload: response})
-   } catch (err) {
-      console.error(err);
-      yield put({type: ADD_COMMENT_FAIL, error: err.message})
+   } catch (error) {
+      yield put({
+         type: ADD_COMMENT_FAIL, error: error.response && error.response.data.message
+                                        ? error.response.data.message
+                                        : error.message,
+      })
    }
 }
 
@@ -34,8 +37,12 @@ export function* replyCommentActions(action) {
       const token = userInfo.token;
       const response = yield call(replyComment, ...[action, token]);
       yield put({type: REPLY_COMMENT_SUCCESS, payload: response});
-   } catch (err) {
-      console.log(err);
+   } catch (error) {
+      yield put({
+         type: REPLY_COMMENT_FAIL, error: error.response && error.response.data.message
+                                          ? error.response.data.message
+                                          : error.message,
+      })
    }
 }
 
@@ -46,8 +53,12 @@ export function* editCommentActions(action) {
       const token = userInfo.token;
       const response = yield call(editComment, ...[action, token]);
       yield put({type: EDIT_COMMENT_SUCCESS, payload: response});
-   } catch (err) {
-      console.error(err);
+   } catch (error) {
+      yield put({
+         type: EDIT_COMMENT_FAIL, error: error.response && error.response.data.message
+                                         ? error.response.data.message
+                                         : error.message,
+      })
    }
 }
 

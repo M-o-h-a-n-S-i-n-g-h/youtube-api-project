@@ -9,6 +9,7 @@ import { Avatar, Button, CircularProgress, Grid } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/actions/auth.action";
 import YouTubeIcon from '@material-ui/icons/YouTube';
+import { Link, withRouter } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
    root: {
@@ -22,11 +23,9 @@ const useStyles = makeStyles((theme) => ({
    },
 }));
 
-export default function NavBar() {
+const NavBar = () => {
    const classes = useStyles();
-   const [auth, setAuth] = React.useState(true);
    const [anchorEl, setAnchorEl] = React.useState(null);
-   const open = Boolean(anchorEl);
    const dispatch = useDispatch();
    const {isLoggedIn, imgUrl, loading} = useSelector((state) => state.auth);
    
@@ -63,44 +62,53 @@ export default function NavBar() {
                        />
                     </Grid>
                     <Grid item>
-                       <span><b style={{fontFamily: "Open Sans"}}>Youtube</b></span>
+                       <Link to="/">
+                        <span>
+                           <b
+                             style={{fontFamily: "Open Sans", cursor: "pointer"}}>Youtube
+                           </b>
+                        </span>
+                       </Link>
                     </Grid>
                  </Grid>
               </Typography>
-              {auth && (
-                <div>
-                   {isLoggedIn &&
-                   <Button
-                     variant="contained"
-                     color="primary"
-                     onClick={signOutHandler}
-                   >
-                      SignOut
-                   </Button>
-                   }
-                   {!isLoggedIn &&
-                   <Button variant="contained"
-                           color="primary"
-                           onClick={signInHandler}
-                   >
-                      SignIn
-                   </Button>
-                   }
-                   {loading ? <CircularProgress color="secondary"/> :
-                    <IconButton
-                      aria-label="account of current user"
-                      aria-controls="menu-appbar"
-                      aria-haspopup="true"
-                      onClick={handleMenu}
-                      color="inherit"
-                    >
-                       <Avatar src={imgUrl}/>
-                    </IconButton>
-                   }
-                </div>
-              )}
+              <Link to="/">
+                 <Button color="inherit">Home</Button>
+              </Link>
+              <div>
+                 {isLoggedIn &&
+                 <Button
+                   variant="contained"
+                   color="primary"
+                   onClick={signOutHandler}
+                 >
+                    SignOut
+                 </Button>
+                 }
+                 {!isLoggedIn &&
+                 <Button variant="contained"
+                         color="primary"
+                         onClick={signInHandler}
+                 >
+                    SignIn
+                 </Button>
+                 }
+                 {loading ? <CircularProgress color="secondary"/> :
+                  <IconButton
+                    aria-label="account of current user"
+                    aria-controls="menu-appbar"
+                    aria-haspopup="true"
+                    onClick={handleMenu}
+                    color="inherit"
+                  >
+                     <Avatar src={imgUrl}/>
+                  </IconButton>
+                 }
+              </div>
            </Toolbar>
         </AppBar>
      </div>
    );
 }
+
+export default withRouter(NavBar);

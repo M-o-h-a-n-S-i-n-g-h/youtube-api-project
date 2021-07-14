@@ -1,6 +1,6 @@
 import { takeLatest, call, put } from "redux-saga/effects";
 import {
-   SEARCH_LIST,
+   SEARCH_LIST, SEARCH_LIST_FAIL,
    SEARCH_LIST_REQUEST,
    SEARCH_LIST_SUCCESS
 } from "../constants/search.constants";
@@ -13,7 +13,11 @@ export function* getSearchResults(action) {
       const results = yield call(fetchResults, action);
       yield put({type: SEARCH_LIST_SUCCESS, payload: results});
    } catch (error) {
-      console.log(error)
+      yield put({
+         type: SEARCH_LIST_FAIL, error: error.response && error.response.data.message
+                                        ? error.response.data.message
+                                        : error.message,
+      })
    }
 }
 

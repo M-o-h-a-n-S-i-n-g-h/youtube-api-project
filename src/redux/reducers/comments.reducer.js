@@ -5,7 +5,7 @@ import {
    REPLY_COMMENT_REQUEST,
    REPLY_COMMENT_SUCCESS,
    EDIT_COMMENT_REQUEST,
-   EDIT_COMMENT_SUCCESS
+   EDIT_COMMENT_SUCCESS, REPLY_COMMENT_FAIL, EDIT_COMMENT_FAIL
 } from "../constants/comment.constants";
 
 export const commentsReducer = (state = {addCommentResponse: {}}, action) => {
@@ -20,10 +20,14 @@ export const commentsReducer = (state = {addCommentResponse: {}}, action) => {
          return {loading: true}
       case REPLY_COMMENT_SUCCESS:
          return {loading: false, replyCommentResponse: action.payload}
+      case REPLY_COMMENT_FAIL:
+         return {loading: false, error: action.error}
       case EDIT_COMMENT_REQUEST:
          return {loading: true}
       case EDIT_COMMENT_SUCCESS:
          return {loading: false, editCommentResponse: action.payload}
+      case EDIT_COMMENT_FAIL:
+         return {loading: false, error: action.error}
       default:
          return state
    }

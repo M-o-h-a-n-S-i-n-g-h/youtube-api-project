@@ -3,6 +3,7 @@ import SearchBar from "../components/SearchBar/SearchBar.component";
 import { getSearchResultsAction } from "../redux/actions/search.action";
 import { connect } from "react-redux";
 import VideoList from "../components/VideoList/VideoList.component";
+import Layout from "../components/Layout/Layout";
 
 class HomeScreen extends React.Component {
    constructor(props) {
@@ -23,10 +24,10 @@ class HomeScreen extends React.Component {
    
    render() {
       return (
-        <div>
-           <SearchBar handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
+        <Layout>
+           <SearchBar data-testid="search" handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
            {this.props.results.items && <VideoList videos={this.props.results.items}/>}
-        </div>
+        </Layout>
       )
    }
 }

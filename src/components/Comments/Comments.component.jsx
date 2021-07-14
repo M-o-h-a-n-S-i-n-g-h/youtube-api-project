@@ -1,14 +1,14 @@
 import React, { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { editComment, replyComment } from "../../redux/actions/comments.action";
-import { Avatar, Button, TextField } from "@material-ui/core";
+import { Button, TextField } from "@material-ui/core";
 import CommentList from "../List/List";
 
 const Comments = ({videoComments, parentId}) => {
    const [readyToEdit, setReadyToEdit] = useState(false);
    const [readyToReply, setReadyToReply] = useState(false);
    const dispatch = useDispatch();
-   const {user} = useSelector(state => state.auth);
+   const {user, isLoggedIn} = useSelector(state => state.auth);
    const replyRef = useRef("");
    const editRef = useRef("");
    
@@ -56,8 +56,8 @@ const Comments = ({videoComments, parentId}) => {
                            profileUrl={videoComments.topLevelComment.snippet?.authorProfileImageUrl}
                            userName={videoComments.topLevelComment.snippet?.authorDisplayName}
               />
-              {user === videoComments.topLevelComment.snippet?.authorDisplayName &&
-              <span>
+              {user === videoComments.topLevelComment.snippet?.authorDisplayName && isLoggedIn ?
+               <span>
               <Button
                 variant="outlined"
                 color="primary"
@@ -65,7 +65,17 @@ const Comments = ({videoComments, parentId}) => {
               >
                  Edit
               </Button>
+           </span> : <span>
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={handleEditButton}
+                disabled={true}
+              >
+                 Edit
+              </Button>
            </span>}
+              
               {readyToEdit && (
                 <Reply
                   reference={editRef}
@@ -73,14 +83,22 @@ const Comments = ({videoComments, parentId}) => {
                   title="Edit"
                 />
               )}
-              <span>
+              {isLoggedIn ? <span>
               <Button variant="outlined" color="primary"
                       onClick={handleReplyButton}
                       style={{marginRight: "20px"}}
               >
                  Reply
               </Button>
-           </span>
+           </span> : <span>
+              <Button variant="outlined" color="primary"
+                      onClick={handleReplyButton}
+                      style={{marginRight: "20px"}}
+                      disabled={true}
+              >
+                 Reply
+              </Button>
+           </span>}
               {readyToReply ? (
                               <Reply
                                 reference={replyRef}
