@@ -6,8 +6,9 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import { Avatar, Button, Divider, TextField } from "@material-ui/core";
 import TextAccordian from "../Accordian/Accordian";
 import { addComment } from "../../redux/actions/comments.action";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { login } from "../../redux/actions/auth.action";
 
 
 const VideoInfo = ({
@@ -44,6 +45,7 @@ const VideoInfo = ({
    }
    const [textOriginal, setTextOriginal] = useState("");
    const dispatch = useDispatch();
+   const {isLoggedIn} = useSelector(state => state.auth);
    
    
    const handleAddComment = (channelId, videoId, textOriginal) => {
@@ -106,12 +108,21 @@ const VideoInfo = ({
           margin={"normal"}
         />
         <span>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => handleAddComment(channelId, videoId, textOriginal)}>
-              Add Comment
-           </Button>
+           {
+              isLoggedIn ? (<Button
+                           variant="contained"
+                           color="primary"
+                           onClick={() => handleAddComment(channelId, videoId, textOriginal)}>
+                            Add Comment
+                         </Button>)
+                         :
+              (<Button
+                variant="contained"
+                color="primary"
+                onClick={() => dispatch(login())}>
+                 SignIn to Add Comment
+              </Button>)
+           }
         </span>
         {comments.map((comment) => (
           <Comments

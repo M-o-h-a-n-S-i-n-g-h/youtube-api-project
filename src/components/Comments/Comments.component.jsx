@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { editComment, replyComment } from "../../redux/actions/comments.action";
 import { Button, TextField } from "@material-ui/core";
 import CommentList from "../List/List";
+import { login } from "../../redux/actions/auth.action";
 
 const Comments = ({videoComments, parentId}) => {
    const [readyToEdit, setReadyToEdit] = useState(false);
@@ -83,13 +84,12 @@ const Comments = ({videoComments, parentId}) => {
                  Reply
               </Button>
            </span> : <span>
-              <Button variant="outlined" color="primary"
-                      onClick={handleReplyButton}
-                      style={{marginRight: "20px"}}
-                      disabled={true}
-              >
-                 Reply
-              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={() => dispatch(login())}>
+              SignIn in to Reply
+           </Button>
            </span>}
               {readyToReply ? (
                               <Reply

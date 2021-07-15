@@ -20,6 +20,7 @@ const VideoDetail = ({match}) => {
    
    const handleAddComment = (channelId, videoId, textOriginal) => {
       dispatch(addComment(channelId, videoId, textOriginal));
+      dispatch(getVideoDetailsAction());
       setTextOriginal("");
    }
    
@@ -62,12 +63,6 @@ const VideoDetail = ({match}) => {
                   value={textOriginal}
                   onChange={(e) => setTextOriginal(e.target.value)}
                 />
-                <span>
-            <button
-              onClick={() => handleAddComment(channelId, videoId, textOriginal)}>
-              Add Comment
-           </button>
-        </span>
              </>
            )}
         </div>

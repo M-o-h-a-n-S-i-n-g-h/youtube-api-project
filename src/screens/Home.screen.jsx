@@ -6,6 +6,11 @@ import VideoList from "../components/VideoList/VideoList.component";
 import Layout from "../components/Layout/Layout";
 import { getPopularVideos, resetPopularVideosAction } from "../redux/actions/video.action";
 import PopularVideosList from "../components/PopularVideoList/PopularVideosList.component";
+import 'react-toastify/dist/ReactToastify.css';
+import { CircularProgress } from "@material-ui/core";
+import { toast, ToastContainer } from "react-toastify";
+import ShowLoading from "../components/ShowLoading/ShowLoading";
+import ShowError from "../components/ShowError/ShowError";
 
 class HomeScreen extends React.Component {
    constructor(props) {
@@ -29,8 +34,21 @@ class HomeScreen extends React.Component {
       this.props.resetPopularVideosAction();
    }
    
+   
+   showError = (error) => {
+      toast.error(error);
+      return <ToastContainer autoClose={3000}/>
+   }
+   
    render() {
-      const {results, popularVideos} = this.props;
+      const {
+         results,
+         popularVideos,
+         videoLoading,
+         searchLoading,
+         videoError,
+         searchError
+      } = this.props;
       
       if (this.props.error) {
          return <h2 className="App">{this.props.error}</h2>
@@ -39,6 +57,10 @@ class HomeScreen extends React.Component {
       return (
         <Layout>
            <SearchBar handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
+           {videoLoading && <ShowLoading/>}
+           {searchLoading && <ShowLoading/>}
+           {videoError && <ShowError error={videoError}/>}
+           {searchError && <ShowError error={searchError}/>}
            {
               (popularVideos?.items &&
                 <PopularVideosList popularVideos={popularVideos.items}/>) ?? (results?.items &&
@@ -47,19 +69,27 @@ class HomeScreen extends React.Component {
         </Layout>
       )
    }
+   
 }
 
 const mapStateToProps = state => {
    return {
-      results: state.search.results,
-      popularVideos: state.video.popularVideos,
-      loading: state.video.loading,
-      searchError: state.search.error,
-      videoError: state.video.error
-   }
+   results: state.search.results
+,
+   popularVideos: state.video.popularVideos
+,
+   videoLoading: state.video.loading
+,
+   searchLoading: state.search.loading
+,
+   searchError: state.search.error
+,
+   videoError: state.video.error
+}
 }
 
-const mapDispatchToProps = dispatch => {
+const mapDispatchToProps = dispatch =>
+{
    return {
       getSearchResultsAction: (query) => dispatch(getSearchResultsAction(query)),
       getPopularVideosAction: () => dispatch(getPopularVideos()),
