@@ -13,11 +13,12 @@ const VideoList = ({videos}) => {
    
    return (
      <Masonry
+       data-testid="videoListMasonry"
        breakpointCols={breakPoints}
        className="my-masonry-grid"
        columnClassName="my-masonry-grid_column">
         {videos.map((video, index) => (
-          <Grid item>
+          <Grid item key={index}>
              <VideoItem key={index} video={video}/>
           </Grid>
         ))}

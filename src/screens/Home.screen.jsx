@@ -23,9 +23,13 @@ class HomeScreen extends React.Component {
    }
    
    render() {
+      if (this.props.error) {
+         return <h2 className="App">{this.props.error}</h2>
+      }
+      
       return (
         <Layout>
-           <SearchBar data-testid="search" handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
+           <SearchBar handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
            {this.props.results.items && <VideoList videos={this.props.results.items}/>}
         </Layout>
       )
@@ -35,6 +39,7 @@ class HomeScreen extends React.Component {
 const mapStateToProps = state => {
    return {
       results: state.search.results,
+      error: state.search.error
    }
 }
 

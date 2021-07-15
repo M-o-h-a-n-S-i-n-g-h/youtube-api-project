@@ -93,7 +93,7 @@ const NavBar = () => {
                     SignIn
                  </Button>
                  }
-                 {loading ? <CircularProgress color="secondary"/> :
+                 {loading ? null :
                   <IconButton
                     aria-label="account of current user"
                     aria-controls="menu-appbar"

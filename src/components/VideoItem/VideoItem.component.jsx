@@ -29,6 +29,7 @@ const VideoItem = ({video, history}) => {
    return (
      <Box borderColor="secondary.main" {...defaultProps} >
         <Card className={classes.root}
+              data-testid="card"
               style={{margin: "20px"}}
               variant="elevation"
               onClick={() => history.push(`/video/${video.id.videoId}`)}

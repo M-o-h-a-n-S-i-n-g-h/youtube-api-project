@@ -12,13 +12,11 @@ const VideoDetail = ({match}) => {
    const videoSrc = `https://www.youtube.com/embed/${videoId}`;
    
    const dispatch = useDispatch();
-   const {videoDetails, loading} = useSelector((state) => state.video);
-   // const {addCommentResponse, replyCommentResponse, error} = useSelector(state => state.comment);
+   const {videoDetails, loading, error} = useSelector((state) => state.video);
    const video = videoDetails ? videoDetails.video : null;
    const comments = videoDetails ? videoDetails.comments : null;
    const channelId = video ? video.items[0].snippet.channelId : null;
-   // console.log(video)
-   // console.log(comments)
+   
    
    const handleAddComment = (channelId, videoId, textOriginal) => {
       dispatch(addComment(channelId, videoId, textOriginal));
@@ -27,7 +25,11 @@ const VideoDetail = ({match}) => {
    
    useEffect(() => {
       dispatch(getVideoDetailsAction(videoId));
-   }, [dispatch, videoId])
+   }, [videoId])
+   
+   if (error) {
+      return <h2 className="App">{error}</h2>
+   }
    
    return (
      <Layout>

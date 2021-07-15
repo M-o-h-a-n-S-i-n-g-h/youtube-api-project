@@ -1,7 +1,6 @@
 import { youtube } from "./Helpers";
 
 export const postComment = async (action, token) => {
-   console.log(action, token)
    const config = {
       headers: {
          "Accept": "application/json",
