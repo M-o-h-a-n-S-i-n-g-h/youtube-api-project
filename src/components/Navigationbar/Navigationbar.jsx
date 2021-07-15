@@ -65,7 +65,8 @@ const NavBar = () => {
                        <Link to="/">
                         <span>
                            <b
-                             style={{fontFamily: "Open Sans", cursor: "pointer"}}>Youtube
+                             style={{fontFamily: "Open Sans", cursor: "pointer"}}>
+                              Youtube
                            </b>
                         </span>
                        </Link>

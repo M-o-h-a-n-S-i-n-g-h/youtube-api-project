@@ -35,10 +35,9 @@ const VideoDetail = ({match}) => {
      <Layout>
         <div>
            {loading &&
-           <CircularProgress size={40}
+           <CircularProgress size={60}
                              left={-20}
                              top={10}
-                             status={'loading'}
                              style={{marginLeft: '50%'}}
                              color="secondary"
            />}

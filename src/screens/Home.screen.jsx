@@ -4,6 +4,8 @@ import { getSearchResultsAction } from "../redux/actions/search.action";
 import { connect } from "react-redux";
 import VideoList from "../components/VideoList/VideoList.component";
 import Layout from "../components/Layout/Layout";
+import { getPopularVideos, resetPopularVideosAction } from "../redux/actions/video.action";
+import PopularVideosList from "../components/PopularVideoList/PopularVideosList.component";
 
 class HomeScreen extends React.Component {
    constructor(props) {
@@ -13,6 +15,10 @@ class HomeScreen extends React.Component {
       }
    }
    
+   componentDidMount() {
+      this.props.getPopularVideosAction();
+   }
+   
    handleChange = (event) => {
       this.setState({query: event.target.value})
    }
@@ -20,9 +26,12 @@ class HomeScreen extends React.Component {
    handleSubmit = (event) => {
       event.preventDefault();
       this.props.getSearchResultsAction(this.state.query);
+      this.props.resetPopularVideosAction();
    }
    
    render() {
+      const {results, popularVideos} = this.props;
+      
       if (this.props.error) {
          return <h2 className="App">{this.props.error}</h2>
       }
@@ -30,7 +39,11 @@ class HomeScreen extends React.Component {
       return (
         <Layout>
            <SearchBar handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
-           {this.props.results.items && <VideoList videos={this.props.results.items}/>}
+           {
+              (popularVideos?.items &&
+                <PopularVideosList popularVideos={popularVideos.items}/>) ?? (results?.items &&
+                <VideoList videos={results.items}/>)
+           }
         </Layout>
       )
    }
@@ -39,13 +52,18 @@ class HomeScreen extends React.Component {
 const mapStateToProps = state => {
    return {
       results: state.search.results,
-      error: state.search.error
+      popularVideos: state.video.popularVideos,
+      loading: state.video.loading,
+      searchError: state.search.error,
+      videoError: state.video.error
    }
 }
 
 const mapDispatchToProps = dispatch => {
    return {
       getSearchResultsAction: (query) => dispatch(getSearchResultsAction(query)),
+      getPopularVideosAction: () => dispatch(getPopularVideos()),
+      resetPopularVideosAction: () => dispatch(resetPopularVideosAction())
    }
 }
 

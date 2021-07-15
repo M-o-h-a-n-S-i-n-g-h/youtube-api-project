@@ -1,8 +1,8 @@
 import { takeLatest, call, put } from "redux-saga/effects";
 import {
    SEARCH_LIST, SEARCH_LIST_FAIL,
-   SEARCH_LIST_REQUEST,
-   SEARCH_LIST_SUCCESS
+   SEARCH_LIST_REQUEST, SEARCH_LIST_RESET,
+   SEARCH_LIST_SUCCESS, SEARCH_RESET
 } from "../constants/search.constants";
 import { fetchResults } from "../../Helpers/search.helper";
 
@@ -20,6 +20,7 @@ export function* getSearchResults(action) {
       })
    }
 }
+
 
 export function* watchSearchResults() {
    yield takeLatest(SEARCH_LIST, getSearchResults);

@@ -7,9 +7,11 @@ import { Avatar, Button, Divider, TextField } from "@material-ui/core";
 import TextAccordian from "../Accordian/Accordian";
 import { addComment } from "../../redux/actions/comments.action";
 import { useDispatch } from "react-redux";
+import { withRouter } from "react-router-dom";
 
 
 const VideoInfo = ({
+   history,
    videoTitle,
    channelTitle,
    videoSrc,
@@ -82,6 +84,17 @@ const VideoInfo = ({
                marginLeft: "15px",
             }}>{channelTitle}</span>
         </span>
+           <span>
+              <Button
+                variant="contained"
+                color="primary"
+                style={{marginLeft: "20px"}}
+                onClick={() => {
+                   history.push(`/playlist/${channelId}`)
+                }}>
+                 Show PlayLists
+              </Button>
+           </span>
         </div>
         <Divider variant="inset"/>
         <TextAccordian description={description}/>
@@ -114,4 +127,4 @@ const VideoInfo = ({
    )
 }
 
-export default VideoInfo;
+export default withRouter(VideoInfo);

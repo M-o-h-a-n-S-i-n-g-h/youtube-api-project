@@ -6,7 +6,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Typography from '@material-ui/core/Typography';
 import { Box } from "@material-ui/core";
-import { withRouter } from "react-router-dom";
+import { useParams, withRouter } from "react-router-dom";
 
 const useStyles = makeStyles({
    root: {
@@ -23,8 +23,12 @@ const defaultProps = {
    marginTop: "20px"
 };
 
-const VideoItem = ({video, history}) => {
+const VideoItem = ({video, history, match}) => {
    const classes = useStyles();
+   
+   const checkRouteToRedirect = () => {
+      return match.path.startsWith("/p");
+   }
    
    return (
      <Box borderColor="secondary.main" {...defaultProps} >
@@ -32,7 +36,10 @@ const VideoItem = ({video, history}) => {
               data-testid="card"
               style={{margin: "20px"}}
               variant="elevation"
-              onClick={() => history.push(`/video/${video.id.videoId}`)}
+              onClick={() => history.push(!checkRouteToRedirect()
+                                          ? `/video/${video.id.videoId ?? video.id}`
+                                          : match.url)
+              }
         >
            <CardActionArea>
               <CardMedia
@@ -45,14 +52,10 @@ const VideoItem = ({video, history}) => {
                  <Typography gutterBottom variant="h6" component="h3">
                     {video.snippet.title}
                  </Typography>
-                 <Typography variant="body2" color="textSecondary" component="p">
-                    {video.snippet.description}
-                 </Typography>
               </CardContent>
            </CardActionArea>
         </Card>
      </Box>
-   
    );
 }
 

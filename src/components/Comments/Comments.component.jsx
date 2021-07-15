@@ -41,12 +41,14 @@ const Comments = ({videoComments, parentId}) => {
       )
    }
    
-   const Reply = ({
-        reference, handler, title
-     }
-   ) => (
+   const Reply = ({reference, handler, title}) => (
      <Input reference={reference} handler={handler} title={title}/>
    )
+   
+   const userExist = () => {
+      return user === videoComments.topLevelComment.snippet?.authorDisplayName;
+   }
+   
    
    return (
      <div>
@@ -56,7 +58,7 @@ const Comments = ({videoComments, parentId}) => {
                            profileUrl={videoComments.topLevelComment.snippet?.authorProfileImageUrl}
                            userName={videoComments.topLevelComment.snippet?.authorDisplayName}
               />
-              {user === videoComments.topLevelComment.snippet?.authorDisplayName && isLoggedIn ?
+              {userExist() && isLoggedIn ?
                <span>
               <Button
                 variant="outlined"
@@ -65,17 +67,7 @@ const Comments = ({videoComments, parentId}) => {
               >
                  Edit
               </Button>
-           </span> : <span>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={handleEditButton}
-                disabled={true}
-              >
-                 Edit
-              </Button>
-           </span>}
-              
+           </span> : null}
               {readyToEdit && (
                 <Reply
                   reference={editRef}
