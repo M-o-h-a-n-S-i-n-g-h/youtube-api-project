@@ -1,5 +1,5 @@
 import SearchBar from "../components/SearchBar/SearchBar.component";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import VideoList from "../components/VideoList/VideoList.component";
 
@@ -15,12 +15,20 @@ describe("SearchBar Component", () => {
       expect(screen.getByTestId("input")).toBeInTheDocument();
    })
    
-   test("On Form Submit", async () => {
+   test("On Empty Form Submit", () => {
+      const mockSubmit = jest.fn();
+      render(<SearchBar handleSubmit={mockSubmit}/>);
+      const input = screen.getByTestId("input");
+      userEvent.type(input, " {enter}");
+      expect(mockSubmit).not.toHaveBeenCalled();
+   })
+   
+   test("On Valid Form Submit", async () => {
       const mockSubmit = jest.fn();
       render(<SearchBar handleSubmit={mockSubmit}/>);
       const input = screen.getByTestId("input");
       userEvent.type(input, "reactJS{enter}");
-      expect(mockSubmit).toBeCalled();
+      expect(mockSubmit).toBeCalledTimes(1);
       const videos = [{
          snippet: {
             thumbnails: {
@@ -37,4 +45,12 @@ describe("SearchBar Component", () => {
       );
       expect(await screen.findByTestId("videoListMasonry")).toBeInTheDocument();
    })
+   //
+   // jest.mock("./__mocks__/searchActionMock.js");
+   // test("fetches the search results from api", () => {
+   //    const wrapper = render(<VideoList videos={} />);
+   //    expect(wrapper.getByTestId("card")).toBeInTheDocument();
+   //    expect(wrapper.getByText("")).toBeInTheDocument();
+   // })
+   //
 })

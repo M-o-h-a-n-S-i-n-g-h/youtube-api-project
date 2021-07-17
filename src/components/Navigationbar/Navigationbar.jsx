@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import { Avatar, Button, CircularProgress, Grid } from "@material-ui/core";
+import { Avatar, Button, Grid } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/actions/auth.action";
 import YouTubeIcon from '@material-ui/icons/YouTube';
 import { Link, withRouter } from "react-router-dom";
+import ShowSuccess from "../ShowSuccess/ShowSuccess";
 
 const useStyles = makeStyles((theme) => ({
    root: {
@@ -27,20 +28,35 @@ const NavBar = () => {
    const classes = useStyles();
    const [anchorEl, setAnchorEl] = React.useState(null);
    const dispatch = useDispatch();
-   const {isLoggedIn, imgUrl, loading} = useSelector((state) => state.auth);
+   const {isLoggedIn, imgUrl, loading, success} = useSelector((state) => state.auth);
+   const [notify, setNotify] = useState(false);
    
    const handleMenu = (event) => {
       setAnchorEl(event.currentTarget);
    };
    
-   const signInHandler = () => (
-     dispatch(login())
-   )
+   const showToast = () => {
+      if (notify) {
+         return <ShowSuccess message={"SignIn success"}/>
+      } else {
+         return null;
+      }
+   }
+   
+   const signInHandler = () => {
+      dispatch(login()).then(() => {
+         setNotify(true);
+         setTimeout(() => {
+            setNotify(false);
+         }, 4000)
+      })
+   }
    
    const signOutHandler = () => {
       sessionStorage.removeItem("persist:root");
       window.location.reload();
    }
+   
    
    return (
      <div className={classes.root}>
@@ -108,6 +124,7 @@ const NavBar = () => {
               </div>
            </Toolbar>
         </AppBar>
+        {showToast()}
      </div>
    );
 }

@@ -7,7 +7,6 @@ import Layout from "../components/Layout/Layout";
 import { getPopularVideos, resetPopularVideosAction } from "../redux/actions/video.action";
 import PopularVideosList from "../components/PopularVideoList/PopularVideosList.component";
 import 'react-toastify/dist/ReactToastify.css';
-import { CircularProgress } from "@material-ui/core";
 import { toast, ToastContainer } from "react-toastify";
 import ShowLoading from "../components/ShowLoading/ShowLoading";
 import ShowError from "../components/ShowError/ShowError";
@@ -17,6 +16,7 @@ class HomeScreen extends React.Component {
       super(props);
       this.state = {
          query: "",
+         error: false
       }
    }
    
@@ -30,8 +30,15 @@ class HomeScreen extends React.Component {
    
    handleSubmit = (event) => {
       event.preventDefault();
-      this.props.getSearchResultsAction(this.state.query);
-      this.props.resetPopularVideosAction();
+      if (this.state.query.length === 0) {
+         this.setState(({error: true}));
+         setTimeout(() => {
+            this.setState({error: false});
+         }, 4000)
+      } else {
+         this.props.getSearchResultsAction(this.state.query);
+         this.props.resetPopularVideosAction();
+      }
    }
    
    
@@ -47,6 +54,7 @@ class HomeScreen extends React.Component {
          videoLoading,
          searchLoading,
          videoError,
+         loading,
          searchError
       } = this.props;
       
@@ -57,10 +65,10 @@ class HomeScreen extends React.Component {
       return (
         <Layout>
            <SearchBar handleChange={this.handleChange} handleSubmit={this.handleSubmit}/>
-           {videoLoading && <ShowLoading/>}
-           {searchLoading && <ShowLoading/>}
+           {loading && <ShowLoading/>}
            {videoError && <ShowError error={videoError}/>}
            {searchError && <ShowError error={searchError}/>}
+           {this.state.error && <ShowError error="Please enter a query to search for Videos"/>}
            {
               (popularVideos?.items &&
                 <PopularVideosList popularVideos={popularVideos.items}/>) ?? (results?.items &&
@@ -69,27 +77,26 @@ class HomeScreen extends React.Component {
         </Layout>
       )
    }
-   
 }
 
 const mapStateToProps = state => {
    return {
-   results: state.search.results
-,
-   popularVideos: state.video.popularVideos
-,
-   videoLoading: state.video.loading
-,
-   searchLoading: state.search.loading
-,
-   searchError: state.search.error
-,
-   videoError: state.video.error
-}
+      loading: state.search.loading || state.video.loading,
+      results: state.search.results
+      ,
+      popularVideos: state.video.popularVideos
+      ,
+      videoLoading: state.video.loading
+      ,
+      searchLoading: state.search.loading
+      ,
+      searchError: state.search.error
+      ,
+      videoError: state.video.error
+   }
 }
 
-const mapDispatchToProps = dispatch =>
-{
+const mapDispatchToProps = dispatch => {
    return {
       getSearchResultsAction: (query) => dispatch(getSearchResultsAction(query)),
       getPopularVideosAction: () => dispatch(getPopularVideos()),

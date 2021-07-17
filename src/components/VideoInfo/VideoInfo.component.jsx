@@ -9,6 +9,8 @@ import { addComment } from "../../redux/actions/comments.action";
 import { useDispatch, useSelector } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { login } from "../../redux/actions/auth.action";
+import ShowError from "../ShowError/ShowError";
+import { getVideoDetailsAction } from "../../redux/actions/video.action";
 
 
 const VideoInfo = ({
@@ -36,6 +38,10 @@ const VideoInfo = ({
          margin: "20px",
          fontSize: "3em",
       },
+      text: {
+         top: "-20%",
+         bottom: "50px"
+      },
       span: {
          fontSize: "6px",
       },
@@ -44,18 +50,33 @@ const VideoInfo = ({
       }
    }
    const [textOriginal, setTextOriginal] = useState("");
+   const [error, setError] = useState("");
+   const [success, setSuccess] = useState("");
    const dispatch = useDispatch();
    const {isLoggedIn} = useSelector(state => state.auth);
    
    
-   const handleAddComment = (channelId, videoId, textOriginal) => {
-      dispatch(addComment(channelId, videoId, textOriginal));
-      setTextOriginal("");
+   const handleAddComment = async (channelId, videoId, textOriginal) => {
+      if (textOriginal.length === 0) {
+         setError("You are adding empty comment");
+         setTimeout(() => {
+            setError("")
+         }, 4000)
+      } else {
+         await dispatch(addComment(channelId, videoId, textOriginal));
+         setSuccess("SuccessFully Added Comment");
+         await dispatch(getVideoDetailsAction(videoId));
+         setTimeout(() => {
+            setSuccess("")
+         }, 4000)
+         setTextOriginal("");
+      }
    }
    
    
    return (
      <div>
+        {error && <ShowError error={error}/>}
         <div style={styles.div}>
            <h1 style={styles.h1}>{videoTitle}</h1>
            <span style={styles.span}>
@@ -65,8 +86,9 @@ const VideoInfo = ({
                />
                  <b>{viewCount}</b>
            </span>
-           <span style={styles.likes}><ThumbUpIcon style={styles.icon}/> <b>{likes}</b></span>
-           <span style={styles.likes}><ThumbDownIcon style={styles.icon}/> <b>{dislikes}</b></span>
+           <span style={styles.likes}><ThumbUpIcon style={styles.icon}/> <b
+             style={styles.text}>{likes}</b></span>
+           <span style={styles.likes}><ThumbDownIcon style={styles.icon}/><b>{dislikes}</b></span>
         </span>
         </div>
         <iframe
@@ -113,7 +135,7 @@ const VideoInfo = ({
                            variant="contained"
                            color="primary"
                            onClick={() => handleAddComment(channelId, videoId, textOriginal)}>
-                            Add Comment
+                            Add Comments
                          </Button>)
                          :
               (<Button

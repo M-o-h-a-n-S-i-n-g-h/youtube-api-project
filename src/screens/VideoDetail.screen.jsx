@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getVideoDetailsAction } from "../redux/actions/video.action"
 import VideoInfo from "../components/VideoInfo/VideoInfo.component";
-import { addComment } from "../redux/actions/comments.action";
 import { CircularProgress } from "@material-ui/core";
 import Layout from "../components/Layout/Layout";
 
@@ -17,13 +16,6 @@ const VideoDetail = ({match}) => {
    const comments = videoDetails ? videoDetails.comments : null;
    const channelId = video ? video.items[0].snippet.channelId : null;
    
-   
-   const handleAddComment = (channelId, videoId, textOriginal) => {
-      dispatch(addComment(channelId, videoId, textOriginal));
-      dispatch(getVideoDetailsAction());
-      setTextOriginal("");
-   }
-   
    useEffect(() => {
       dispatch(getVideoDetailsAction(videoId));
    }, [videoId])
@@ -34,7 +26,7 @@ const VideoDetail = ({match}) => {
    
    return (
      <Layout>
-        <div>
+        <div data-testid="videoInfo">
            {loading &&
            <CircularProgress size={60}
                              left={-20}

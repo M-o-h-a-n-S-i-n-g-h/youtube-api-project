@@ -8,10 +8,10 @@ import {
    EDIT_COMMENT_SUCCESS, REPLY_COMMENT_FAIL, EDIT_COMMENT_FAIL
 } from "../constants/comment.constants";
 
-export const commentsReducer = (state = {addCommentResponse: {}}, action) => {
+export const commentsReducer = (state = {addCommentResponse: {status: 100}}, action) => {
    switch (action.type) {
       case ADD_COMMENT_REQUEST:
-         return {loading: true}
+         return {loading: true, status: 100}
       case ADD_COMMENT_SUCCESS:
          return {loading: false, addCommentResponse: action.payload}
       case ADD_COMMENT_FAIL:

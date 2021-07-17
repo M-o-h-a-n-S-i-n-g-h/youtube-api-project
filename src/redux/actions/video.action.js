@@ -1,4 +1,5 @@
 import {
+   GET_COMMENT_SUCCESS,
    GET_POPULARVIDEOS_FAIL,
    GET_POPULARVIDEOS_REQUEST, GET_POPULARVIDEOS_SUCCESS,
    GET_VIDEODETAIL_FAIL,
@@ -27,9 +28,7 @@ export const getVideoDetailsAction = videoId => async dispatch => {
       
    } catch (error) {
       dispatch({
-         type: GET_VIDEODETAIL_FAIL, error: error.response && error.response.data.message
-                                            ? error.response.data.message
-                                            : error.message,
+         type: GET_VIDEODETAIL_FAIL, error: "404 Not Found",
       })
    }
 }

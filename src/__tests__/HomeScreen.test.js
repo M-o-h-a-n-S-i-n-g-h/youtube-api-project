@@ -1,10 +1,10 @@
 import HomeScreen from "../screens/Home.screen";
-import { render, cleanup, screen, getByLabelText } from "@testing-library/react";
+import { render, cleanup, screen, getByLabelText, fireEvent } from "@testing-library/react";
 import { store } from "../store";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import VideoItem from "../components/VideoItem/VideoItem.component";
 import VideoList from "../components/VideoList/VideoList.component";
+import VideoItem, { checkRouteToRedirect } from "../components/VideoItem/VideoItem.component";
 
 afterEach(cleanup)
 
@@ -35,31 +35,34 @@ describe("HomeScreen Component", () => {
    });
    
    test("After Form Submit", () => {
-      const video = {
-         id: {
-            videoId: ""
-         },
-         snippet: {
-            title: "",
-            description: "",
-            thumbnails: {
-               medium: {url: ""}
-            }
-         }
-      }
       render(
         <BrowserRouter>
            <VideoList videos={videos}/>
         </BrowserRouter>
       )
       expect(screen.getByTestId("card")).toBeInTheDocument();
-      
+   })
+   
+   test("After Clicking an element", () => {
+      const video = {
+         id: {
+            videoId: ''
+         },
+         snippet: {
+            thumbnails: {
+               medium: {
+                  url: ""
+               }
+            }
+         }
+      }
       render(
         <BrowserRouter>
            <VideoItem video={video}/>
         </BrowserRouter>
-      );
-      expect(screen.getByTestId("card")).toBeInTheDocument();
-   
+      )
+      const card = screen.getByTestId("card");
+      fireEvent.click(card)
+      expect(checkRouteToRedirect("/p")).toBeTruthy();
    })
 })

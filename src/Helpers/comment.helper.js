@@ -8,7 +8,7 @@ export const postComment = async (action, token) => {
          "Authorization": `Bearer ${token}`,
       },
    };
-   const {data} = await youtube.post("/commentThreads?part=snippet%2Cid%2Creplies", {
+   const {data, status} = await youtube.post("/commentThreads?part=snippet%2Cid%2Creplies", {
         snippet: {
            channelId: action.channelId,
            videoId: action.videoId,
@@ -21,7 +21,7 @@ export const postComment = async (action, token) => {
      },
      config
    );
-   return data;
+   return {data, status};
 }
 
 export const replyComment = async (action, token) => {
