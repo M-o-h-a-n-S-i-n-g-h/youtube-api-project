@@ -51,24 +51,31 @@ const Comments = ({videoComments, parentId}) => {
    }
    
    
+   const {
+      snippet: {
+         textDisplay,
+         authorProfileImageUrl,
+         authorDisplayName
+      }
+   } = videoComments.topLevelComment;
+   
    return (
      <div>
         <h5>
            <>
-              <CommentList comment={videoComments.topLevelComment.snippet?.textDisplay}
-                           profileUrl={videoComments.topLevelComment.snippet?.authorProfileImageUrl}
-                           userName={videoComments.topLevelComment.snippet?.authorDisplayName}
+              <CommentList comment={textDisplay}
+                           profileUrl={authorProfileImageUrl}
+                           userName={authorDisplayName}
               />
-              {userExist() && isLoggedIn ?
-               <span>
+              {userExist() && isLoggedIn ? (<span>
               <Button
                 variant="outlined"
                 color="primary"
                 onClick={handleEditButton}
               >
-                 Edit
+                 {readyToEdit ? "Cancel" : "Edit"}
               </Button>
-           </span> : null}
+           </span>) : null}
               {readyToEdit && (
                 <Reply
                   reference={editRef}
@@ -81,7 +88,7 @@ const Comments = ({videoComments, parentId}) => {
                       onClick={handleReplyButton}
                       style={{marginRight: "20px"}}
               >
-                 Reply
+                 {readyToReply ? "Cancel" : "Reply"}
               </Button>
            </span> : <span>
               <Button
@@ -91,13 +98,14 @@ const Comments = ({videoComments, parentId}) => {
               SignIn in to Reply
            </Button>
            </span>}
-              {readyToReply ? (
-                              <Reply
-                                reference={replyRef}
-                                handler={handleReplyComment}
-                                title="Reply"
-                              />)
-                            : null}
+              {readyToReply ? <Reply
+                              reference={replyRef}
+                              handler={handleReplyComment}
+                              title="Reply"
+                            />
+              
+                            : null
+              }
            </>
         </h5>
      </div>

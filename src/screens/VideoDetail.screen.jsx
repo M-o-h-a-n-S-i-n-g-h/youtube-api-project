@@ -4,6 +4,7 @@ import { getVideoDetailsAction } from "../redux/actions/video.action"
 import VideoInfo from "../components/VideoInfo/VideoInfo.component";
 import { CircularProgress } from "@material-ui/core";
 import Layout from "../components/Layout/Layout";
+import NotFoundError from "../components/404/404";
 
 const VideoDetail = ({match}) => {
    const [textOriginal, setTextOriginal] = useState("");
@@ -14,14 +15,13 @@ const VideoDetail = ({match}) => {
    const {videoDetails, loading, error} = useSelector((state) => state.video);
    const video = videoDetails ? videoDetails.video : null;
    const comments = videoDetails ? videoDetails.comments : null;
-   const channelId = video ? video.items[0].snippet.channelId : null;
    
    useEffect(() => {
       dispatch(getVideoDetailsAction(videoId));
    }, [videoId])
    
    if (error) {
-      return <h2 className="App">{error}</h2>
+      return <NotFoundError className="App">{error}</NotFoundError>
    }
    
    return (
@@ -37,17 +37,10 @@ const VideoDetail = ({match}) => {
            {video && comments && (
              <>
                 <VideoInfo
+                  video={video}
                   videoId={videoId}
-                  videoTitle={video.items[0].snippet.title}
-                  likes={video.items[0].statistics.likeCount}
-                  dislikes={video.items[0].statistics.dislikeCount}
-                  viewCount={video.items[0].statistics.viewCount}
-                  channelTitle={video.items[0].snippet.channelTitle}
-                  channelId={video.items[0].snippet.channelId}
-                  description={video.items[0].snippet.description}
                   videoSrc={videoSrc}
                   comments={comments.items}
-                  thumbnail={video.items[0].snippet.thumbnails.default.url}
                 />
                 <h3>Comments</h3>
                 <input

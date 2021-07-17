@@ -12,48 +12,46 @@ import { login } from "../../redux/actions/auth.action";
 import ShowError from "../ShowError/ShowError";
 import { getVideoDetailsAction } from "../../redux/actions/video.action";
 
-
-const VideoInfo = ({
-   history,
-   videoTitle,
-   channelTitle,
-   videoSrc,
-   videoId,
-   description,
-   likes,
-   dislikes,
-   comments,
-   channelId,
-   viewCount,
-   thumbnail
-}) => {
+const VideoInfo = ({video, history, videoSrc, videoId, comments,}) => {
    const styles = {
       div: {
          textAlign: "center"
       },
       h1: {
          fontSize: "3em",
+         marginTop: "10px"
       },
       likes: {
          margin: "20px",
          fontSize: "3em",
       },
       text: {
-         top: "-20%",
-         bottom: "50px"
+         fontSize: "1.5em",
+         top: "-25%",
+         position: "relative"
       },
       span: {
-         fontSize: "6px",
+         display: "flex",
+         justifyContent: "center",
+         alignItems: "center",
+         margin: "-15px 0 10px 0"
+      },
+      spanIcon: {
+         margin: "0 30px 0 30px"
       },
       icon: {
-         fontSize: "2em",
+         fontSize: "3em",
       }
    }
+   
+   
    const [textOriginal, setTextOriginal] = useState("");
    const [error, setError] = useState("");
-   const [success, setSuccess] = useState("");
    const dispatch = useDispatch();
    const {isLoggedIn} = useSelector(state => state.auth);
+   const {title, channelTitle, description, channelId} = video.items[0].snippet;
+   const {url} = video.items[0].snippet.thumbnails.medium;
+   const {likeCount, dislikeCount, viewCount} = video.items[0].statistics;
    
    
    const handleAddComment = async (channelId, videoId, textOriginal) => {
@@ -64,10 +62,8 @@ const VideoInfo = ({
          }, 4000)
       } else {
          await dispatch(addComment(channelId, videoId, textOriginal));
-         setSuccess("SuccessFully Added Comment");
          await dispatch(getVideoDetailsAction(videoId));
          setTimeout(() => {
-            setSuccess("")
          }, 4000)
          setTextOriginal("");
       }
@@ -78,17 +74,20 @@ const VideoInfo = ({
      <div>
         {error && <ShowError error={error}/>}
         <div style={styles.div}>
-           <h1 style={styles.h1}>{videoTitle}</h1>
+           <h1 style={styles.h1}>{title}</h1>
            <span style={styles.span}>
-              <span style={styles.likes}>
-               <VisibilityIcon
-                 style={styles.icon}
-               />
-                 <b>{viewCount}</b>
+              <span style={styles.spanIcon}>
+                  <VisibilityIcon style={styles.icon}/>
+                 <h4 style={styles.text}>{viewCount}</h4>
+              </span>
+           <span style={styles.spanIcon}>
+              <ThumbUpIcon style={styles.icon}/>
+              <h4 style={styles.text}>{likeCount}</h4>
            </span>
-           <span style={styles.likes}><ThumbUpIcon style={styles.icon}/> <b
-             style={styles.text}>{likes}</b></span>
-           <span style={styles.likes}><ThumbDownIcon style={styles.icon}/><b>{dislikes}</b></span>
+           <span style={styles.spanIcon}>
+              <ThumbDownIcon style={styles.icon}/>
+              <h4 style={styles.text}>{dislikeCount}</h4>
+           </span>
         </span>
         </div>
         <iframe
@@ -100,7 +99,7 @@ const VideoInfo = ({
         />
         <Divider variant="inset"/>
         <div style={{padding: "2em"}}>
-           <Avatar src={thumbnail} style={{display: "inline-block", float: "left"}}/>
+           <Avatar src={url} style={{display: "inline-block", float: "left"}}/>
            <span>
             <span style={{
                fontSize: "2em",
@@ -151,8 +150,6 @@ const VideoInfo = ({
             key={comment.id}
             id={comment.id}
             videoComments={comment.snippet}
-            channelId={channelId}
-            videoId={comment.snippet.videoId}
             parentId={comments[0].id}
           />
         ))}
