@@ -5,6 +5,7 @@
 /.pnp
 .pnp.js
 /.idea
+/src/credentials.js
 
 # testing
 /coverage
