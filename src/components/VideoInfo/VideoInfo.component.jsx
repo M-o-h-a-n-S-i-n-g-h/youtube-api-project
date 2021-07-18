@@ -63,8 +63,6 @@ const VideoInfo = ({video, history, videoSrc, videoId, comments,}) => {
       } else {
          await dispatch(addComment(channelId, videoId, textOriginal));
          await dispatch(getVideoDetailsAction(videoId));
-         setTimeout(() => {
-         }, 4000)
          setTextOriginal("");
       }
    }

@@ -1,9 +1,6 @@
-import { cleanup } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import VideoDetail from "../screens/VideoDetail.screen";
 import renderWithRedux from "./HomeScreen.test";
-import { useSelector, useDispatch } from 'react-redux';
-import configureStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
 
 const middlewares = [thunk]

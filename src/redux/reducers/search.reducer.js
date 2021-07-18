@@ -1,6 +1,6 @@
 import {
    SEARCH_LIST_FAIL,
-   SEARCH_LIST_REQUEST, SEARCH_LIST_RESET,
+   SEARCH_LIST_REQUEST,
    SEARCH_LIST_SUCCESS
 } from "../constants/search.constants";
 

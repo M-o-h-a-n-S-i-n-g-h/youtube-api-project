@@ -1,5 +1,5 @@
 import HomeScreen from "../screens/Home.screen";
-import { render, cleanup, screen, getByLabelText, fireEvent } from "@testing-library/react";
+import { render, cleanup, getByLabelText, fireEvent } from "@testing-library/react";
 import { store } from "../store";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
@@ -33,16 +33,16 @@ describe("HomeScreen Component", () => {
       const {getByLabelText} = renderWithRedux(<HomeScreen/>);
       expect(getByLabelText("Search")).toBeInTheDocument();
    });
-   
-   test("After Form Submit", () => {
-      render(
-        <BrowserRouter>
-           <VideoList videos={videos}/>
-        </BrowserRouter>
-      )
-      expect(screen.getByTestId("card")).toBeInTheDocument();
-   })
-   
+   //
+   // test("After Form Submit", () => {
+   //    const {getByTestId} = render(
+   //      <BrowserRouter>
+   //         <VideoList videos={videos}/>
+   //      </BrowserRouter>
+   //    )
+   //    expect(getByTestId("card")).toBeInTheDocument();
+   // })
+   //
    test("After Clicking an element", () => {
       const video = {
          id: {
@@ -56,12 +56,12 @@ describe("HomeScreen Component", () => {
             }
          }
       }
-      render(
+      const {getByTestId} = render(
         <BrowserRouter>
            <VideoItem video={video}/>
         </BrowserRouter>
       )
-      const card = screen.getByTestId("card");
+      const card = getByTestId("card");
       fireEvent.click(card)
       expect(checkRouteToRedirect("/p")).toBeTruthy();
    })

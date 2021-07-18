@@ -9,22 +9,26 @@ import { checkExistence } from "../Helpers/checkExistence";
 
 const PlayList = () => {
    const dispatch = useDispatch();
+   const {isLoggedIn} = useSelector(state => state.auth);
    const {loading, error, playlist} = useSelector((state) => state.playList);
    const {id} = useParams();
    
    useEffect(() => {
-      dispatch(getPlayListAction(id));
-   }, [])
+      if (isLoggedIn) {
+         dispatch(getPlayListAction(id));
+      }
+   }, [id])
    
    return (
      <AppContainer>
+        {!isLoggedIn && <h2 className="App">Please SignIn to view PlayLists</h2>}
         {loading && <CircularProgress size={100}
                                       left={-20}
                                       top={50}
                                       style={{marginLeft: '50%'}}
                                       color="primary"
         />}
-        {error && <h2>{error}</h2>}
+        {isLoggedIn && error && <h2 className="App">{error}</h2>}
         {playlist?.items && checkExistence(playlist.items) && <VideoList videos={playlist.items}/>}
      </AppContainer>
    )

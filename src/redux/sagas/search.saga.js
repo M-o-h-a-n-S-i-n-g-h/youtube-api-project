@@ -1,8 +1,8 @@
 import { takeLatest, call, put } from "redux-saga/effects";
 import {
    SEARCH_LIST, SEARCH_LIST_FAIL,
-   SEARCH_LIST_REQUEST, SEARCH_LIST_RESET,
-   SEARCH_LIST_SUCCESS, SEARCH_RESET
+   SEARCH_LIST_REQUEST,
+   SEARCH_LIST_SUCCESS
 } from "../constants/search.constants";
 import { fetchResults } from "../../Helpers/search.helper";
 

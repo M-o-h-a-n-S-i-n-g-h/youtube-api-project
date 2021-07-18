@@ -3,7 +3,7 @@ import VideoList from "../VideoList/VideoList.component";
 
 const PopularVideosList = ({popularVideos}) => {
    return (
-     <VideoList videos={popularVideos} />
+     <VideoList videos={popularVideos}/>
    )
 }
 

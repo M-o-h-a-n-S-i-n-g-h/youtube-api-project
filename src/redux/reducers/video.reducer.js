@@ -1,11 +1,10 @@
 import {
-   GET_COMMENT_SUCCESS,
    GET_POPULARVIDEOS_FAIL,
    GET_POPULARVIDEOS_REQUEST, GET_POPULARVIDEOS_SUCCESS,
    GET_VIDEODETAIL_FAIL,
    GET_VIDEODETAIL_REQUEST,
    GET_VIDEODETAIL_SUCCESS, POPULARVIDEOS_RESET
-} from "../constants/video.constants";
+} from "../constants/video.constants"
 
 export function videoReducer(state = {video: {}, popularVideos: {}}, action) {
    switch (action.type) {

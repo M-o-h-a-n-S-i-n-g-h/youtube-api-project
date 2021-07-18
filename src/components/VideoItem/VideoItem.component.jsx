@@ -31,6 +31,8 @@ export const checkRouteToRedirect = (path) => {
 
 const VideoItem = ({video, history, match}) => {
    const classes = useStyles();
+   const {title} = video.snippet;
+   const {medium: {url}} = video.snippet.thumbnails;
    
    return (
      <Box borderColor="secondary.main" {...defaultProps} >
@@ -46,13 +48,13 @@ const VideoItem = ({video, history, match}) => {
            <CardActionArea>
               <CardMedia
                 className={classes.media}
-                image={video.snippet.thumbnails.medium.url}
+                image={url}
                 title="Contemplative Reptile"
                 style={{height: "15em"}}
               />
               <CardContent>
                  <Typography gutterBottom variant="h6" component="h3">
-                    {video.snippet.title}
+                    {title}
                  </Typography>
               </CardContent>
            </CardActionArea>

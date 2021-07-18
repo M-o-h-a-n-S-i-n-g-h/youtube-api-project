@@ -22,13 +22,13 @@ export const getPlayListAction = (channelId) => async (dispatch, getState) => {
         `/playlists?part=snippet&channelId=${channelId}`,
         config,
       );
-   
+      
       if (data.items.length === 0) {
          dispatch({type: PLAYLIST_EMPTY});
       } else {
          dispatch({type: GET_PLAYLIST_SUCCESS, payload: data})
       }
-   
+      
    } catch (error) {
       dispatch({
          type: GET_PLAYLIST_FAIL,

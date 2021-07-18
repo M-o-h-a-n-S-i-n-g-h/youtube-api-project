@@ -4,7 +4,6 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
 import { Avatar, Button, Grid } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../../redux/actions/auth.action";
@@ -26,14 +25,10 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBar = () => {
    const classes = useStyles();
-   const [anchorEl, setAnchorEl] = React.useState(null);
    const dispatch = useDispatch();
-   const {isLoggedIn, imgUrl, loading, success} = useSelector((state) => state.auth);
+   const {isLoggedIn, imgUrl, loading} = useSelector((state) => state.auth);
    const [notify, setNotify] = useState(false);
    
-   const handleMenu = (event) => {
-      setAnchorEl(event.currentTarget);
-   };
    
    const showToast = () => {
       if (notify) {
@@ -64,7 +59,6 @@ const NavBar = () => {
            <Toolbar>
               <IconButton edge="start" className={classes.menuButton} color="inherit"
                           aria-label="menu">
-                 <MenuIcon/>
               </IconButton>
               <Typography variant="h6" className={classes.title}>
                  <Grid container direction="row" alignItems="center">
@@ -115,7 +109,6 @@ const NavBar = () => {
                     aria-label="account of current user"
                     aria-controls="menu-appbar"
                     aria-haspopup="true"
-                    onClick={handleMenu}
                     color="inherit"
                   >
                      <Avatar src={imgUrl}/>
