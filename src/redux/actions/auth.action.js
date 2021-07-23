@@ -6,20 +6,19 @@ export const login = () => dispatch => {
    
    return new Promise((resolve, reject) => {
       signIn()
-      .then((res) => {
-         dispatch({type: SIGNIN_SUCCESS, payload: res})
-         resolve(res)
-      })
-      .catch(error => {
-         dispatch({
-            type: SIGNIN_FAIL,
-            payload:
-              error.response && error.response.data.message
-              ? error.response.data.message
-              : error.message,
-         });
-         reject(error.message)
-      })
+        .then((res) => {
+           dispatch({type: SIGNIN_SUCCESS, payload: res})
+           resolve(res)
+        })
+        .catch(error => {
+           dispatch({
+              type: SIGNIN_FAIL,
+              payload:
+                error.response && error.response.data.message
+                ? error.response.data.message
+                : error.message,
+           });
+           reject(error.message)
+        })
    })
-   
 }

@@ -49,7 +49,7 @@ const VideoItem = ({video, history, match}) => {
               <CardMedia
                 className={classes.media}
                 image={url}
-                title="Contemplative Reptile"
+                title={title}
                 style={{height: "15em"}}
               />
               <CardContent>

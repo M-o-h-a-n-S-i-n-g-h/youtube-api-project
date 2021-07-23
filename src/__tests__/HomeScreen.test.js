@@ -1,9 +1,8 @@
 import HomeScreen from "../screens/Home.screen";
-import { render, cleanup, getByLabelText, fireEvent } from "@testing-library/react";
+import { cleanup, fireEvent, getByLabelText, render } from "@testing-library/react";
 import { store } from "../store";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import VideoList from "../components/VideoList/VideoList.component";
 import VideoItem, { checkRouteToRedirect } from "../components/VideoItem/VideoItem.component";
 
 afterEach(cleanup)
@@ -33,16 +32,7 @@ describe("HomeScreen Component", () => {
       const {getByLabelText} = renderWithRedux(<HomeScreen/>);
       expect(getByLabelText("Search")).toBeInTheDocument();
    });
-   //
-   // test("After Form Submit", () => {
-   //    const {getByTestId} = render(
-   //      <BrowserRouter>
-   //         <VideoList videos={videos}/>
-   //      </BrowserRouter>
-   //    )
-   //    expect(getByTestId("card")).toBeInTheDocument();
-   // })
-   //
+   
    test("After Clicking an element", () => {
       const video = {
          id: {
