@@ -13,10 +13,11 @@ export const signIn = () => {
          });
          gapi.auth2.getAuthInstance().signIn()
            .then(res => {
+              console.log(res);
               const authObject = {
-                 user: res.Ys.getName(),
-                 token: res.mc.access_token,
-                 imgUrl: res.Ys.getImageUrl()
+                 user: res.dt.getName(),
+                 token: res.$b.access_token,
+                 imgUrl: res.dt.getImageUrl()
               }
               resolve(authObject);
            })
